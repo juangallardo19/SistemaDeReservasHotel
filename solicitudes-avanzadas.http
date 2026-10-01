@@ -1,0 +1,92 @@
+### =====================================================================
+### Taller 7 - Contratos Polimorficos, Proyecciones Anidadas y PATCH
+### Ejecutable con la extension "REST Client" de VS Code (o IntelliJ).
+### Ejecutar en orden: cada peticion guarda los IDs que usan las siguientes.
+### Requisito: la API corriendo en http://localhost:8081
+### =====================================================================
+
+@baseUrl = http://localhost:8081
+
+### 0.1 Preparacion: crear una habitacion estandar
+# @name crearEstandar
+POST {{baseUrl}}/api/habitaciones/estandar
+Content-Type: application/json
+
+{
+  "numero": "P02-201",
+  "precioPorNoche": 120.0,
+  "capacidadMaxima": 3,
+  "camasIndividuales": 2
+}
+
+### PRUEBA 1: Creacion de Suite Presidencial -> esperado 201 Created con ID generado
+# @name crearSuite
+POST {{baseUrl}}/api/habitaciones/suites
+Content-Type: application/json
+
+{
+  "numero": "P05-501",
+  "precioPorNoche": 350.0,
+  "capacidadMaxima": 2,
+  "jacuzziPrivado": true,
+  "incluyeMayordomo": true
+}
+
+### PRUEBA 2: Consulta polimorfica -> array con "tipo": "ESTANDAR" y "tipo": "SUITE"
+GET {{baseUrl}}/api/habitaciones
+
+### 0.2 Preparacion: crear un cliente
+# @name crearCliente
+POST {{baseUrl}}/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Santiago Ospina",
+  "email": "santiago.ospina@hotel.com"
+}
+
+### 0.3 Preparacion: reserva de 2 noches en la suite (2 x 350 = 700)
+POST {{baseUrl}}/api/reservas
+Content-Type: application/json
+
+{
+  "clienteId": "{{crearCliente.response.body.id}}",
+  "habitacionId": "{{crearSuite.response.body.id}}",
+  "fechaInicio": "2026-12-01T15:00:00",
+  "fechaFin": "2026-12-03T15:00:00"
+}
+
+### 0.4 Preparacion: reserva de 3 noches en la estandar (3 x 120 = 360)
+POST {{baseUrl}}/api/reservas
+Content-Type: application/json
+
+{
+  "clienteId": "{{crearCliente.response.body.id}}",
+  "habitacionId": "{{crearEstandar.response.body.id}}",
+  "fechaInicio": "2026-12-10T15:00:00",
+  "fechaFin": "2026-12-13T15:00:00"
+}
+
+### PRUEBA 3: Resumen ejecutivo -> totalReservasRealizadas = 2, montoTotalGastado = 1060.0
+###           y reservasRecientes sin referencia al cliente (sin ciclos)
+GET {{baseUrl}}/api/clientes/{{crearCliente.response.body.id}}/resumen
+
+### PRUEBA 4: PATCH enviando solo el nombre -> 200 OK
+PATCH {{baseUrl}}/api/clientes/{{crearCliente.response.body.id}}
+Content-Type: application/json
+
+{
+  "nombre": "Nuevo Nombre Modificado"
+}
+
+### PRUEBA 4b: Verificacion -> email, activo y penalizaciones sin cambios
+GET {{baseUrl}}/api/clientes/{{crearCliente.response.body.id}}
+
+### EXTRA: intento de Mass Assignment -> activo y penalizaciones se ignoran
+PATCH {{baseUrl}}/api/clientes/{{crearCliente.response.body.id}}
+Content-Type: application/json
+
+{
+  "activo": false,
+  "penalizaciones": 99
+}

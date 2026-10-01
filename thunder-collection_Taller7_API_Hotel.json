@@ -1,0 +1,299 @@
+{
+  "clientName": "Thunder Client",
+  "collectionName": "Taller 7 - API Hotel",
+  "collectionId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+  "dateExported": "2026-09-29T12:00:00.000Z",
+  "version": "1.2",
+  "folders": [],
+  "requests": [
+    {
+      "_id": "9f230277-9398-467f-a3ad-e6fe556bda69",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "0.1 Preparación - Crear habitación estándar",
+      "url": "http://localhost:8081/api/habitaciones/estandar",
+      "method": "POST",
+      "sortNum": 10000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.id",
+          "action": "setto",
+          "value": "{{estandarId}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"numero\": \"P02-201\",\n  \"precioPorNoche\": 120.0,\n  \"capacidadMaxima\": 3,\n  \"camasIndividuales\": 2\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "190d8964-b726-4c7c-ad65-58b6b29dd40e",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "PRUEBA 1 - Crear Suite Presidencial (201)",
+      "url": "http://localhost:8081/api/habitaciones/suites",
+      "method": "POST",
+      "sortNum": 20000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.id",
+          "action": "setto",
+          "value": "{{suiteId}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"numero\": \"P05-501\",\n  \"precioPorNoche\": 350.0,\n  \"capacidadMaxima\": 2,\n  \"jacuzziPrivado\": true,\n  \"incluyeMayordomo\": true\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "dbc55881-ff8e-4bf0-bc7b-5c4aa2e35311",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "PRUEBA 2 - Consulta polimórfica de habitaciones",
+      "url": "http://localhost:8081/api/habitaciones",
+      "method": "GET",
+      "sortNum": 30000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "2d61931b-f275-4171-92cb-475140a3376c",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "0.2 Preparación - Crear cliente",
+      "url": "http://localhost:8081/api/clientes",
+      "method": "POST",
+      "sortNum": 40000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        },
+        {
+          "type": "set-env-var",
+          "custom": "json.id",
+          "action": "setto",
+          "value": "{{clienteId}}"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"nombre\": \"Santiago Ospina\",\n  \"email\": \"santiago.ospina@hotel.com\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "e16f0395-eae2-4019-93d5-bef68b962b4f",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "0.3 Preparación - Reserva en la suite (2 noches)",
+      "url": "http://localhost:8081/api/reservas",
+      "method": "POST",
+      "sortNum": 50000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"clienteId\": \"{{clienteId}}\",\n  \"habitacionId\": \"{{suiteId}}\",\n  \"fechaInicio\": \"2026-12-01T15:00:00\",\n  \"fechaFin\": \"2026-12-03T15:00:00\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "886f4055-df27-41b5-a864-c31e59eec057",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "0.4 Preparación - Reserva en la estándar (3 noches)",
+      "url": "http://localhost:8081/api/reservas",
+      "method": "POST",
+      "sortNum": 60000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "201"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"clienteId\": \"{{clienteId}}\",\n  \"habitacionId\": \"{{estandarId}}\",\n  \"fechaInicio\": \"2026-12-10T15:00:00\",\n  \"fechaFin\": \"2026-12-13T15:00:00\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "230f0aae-1421-4002-9cdb-bedc09044b61",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "PRUEBA 3 - Resumen ejecutivo del cliente",
+      "url": "http://localhost:8081/api/clientes/{{clienteId}}/resumen",
+      "method": "GET",
+      "sortNum": 70000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "a7d3b96c-6c0e-4ecd-9121-39d44adebebe",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "PRUEBA 4 - PATCH solo nombre",
+      "url": "http://localhost:8081/api/clientes/{{clienteId}}",
+      "method": "PATCH",
+      "sortNum": 80000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"nombre\": \"Nuevo Nombre Modificado\"\n}",
+        "form": []
+      }
+    },
+    {
+      "_id": "876483b2-d95a-441d-aede-2d935bcbd01a",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "PRUEBA 4b - Verificar cliente (email, activo y penalizaciones intactos)",
+      "url": "http://localhost:8081/api/clientes/{{clienteId}}",
+      "method": "GET",
+      "sortNum": 90000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ]
+    },
+    {
+      "_id": "2470ccfc-476e-4dfe-8110-116c23e0438f",
+      "colId": "07dffcb3-c183-426f-bade-98f4664b91b9",
+      "containerId": "",
+      "name": "EXTRA - Intento de Mass Assignment (se ignora)",
+      "url": "http://localhost:8081/api/clientes/{{clienteId}}",
+      "method": "PATCH",
+      "sortNum": 100000,
+      "created": "2026-09-29T12:00:00.000Z",
+      "modified": "2026-09-29T12:00:00.000Z",
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "tests": [
+        {
+          "type": "res-code",
+          "custom": "",
+          "action": "equal",
+          "value": "200"
+        }
+      ],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"activo\": false,\n  \"penalizaciones\": 99\n}",
+        "form": []
+      }
+    }
+  ],
+  "ref": "taller7"
+}
